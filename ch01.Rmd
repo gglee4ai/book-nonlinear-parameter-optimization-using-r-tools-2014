@@ -3,8 +3,7 @@ title: "Notebook 1"
 output: html_notebook
 ---
 
-
-# Chapter 1
+# 1 Optimization problem tasks and how they arise
 
 ```{r}
 # Figure 1.1
@@ -14,8 +13,7 @@ plot(t, y)
 title(main = "Hobbs’ weed infestation data", font.main = 4)
 ```
 
-
-# Chapter 2
+# 2 Optimization algorithms – an overview
 
 ```{r}
 sq.f <- function(x) {
@@ -34,13 +32,11 @@ sq.g <- function(x) {
 }
 ```
 
-
 ```{r}
 x <- c(0.1, 0.8)
 sq.f(x)
 print(sq.g(x))
 ```
-
 
 ```{r}
 source("resources/C02steepdesc.r")
@@ -51,7 +47,6 @@ asqsd <- stdesc(x, sq.f, sq.g, control = list(trace = 1))
 ```{r}
 print(asqsd)
 ```
-
 
 ```{r}
 grose.f <- function(x, gs = 100) {
@@ -100,14 +95,10 @@ arksd <- stdesc(x, grose.f, grose.g, control=list(trace=0))
 print(arksd)
 ```
 
-
 ```{r}
 F <- function(x) exp(-.05*x)*(x-4)^2
 curve(F, from=0, to=5)
 ```
-
-
-
 
 ```{r}
 newt <- function(x) {
@@ -127,8 +118,9 @@ while (xold != x) {
 }
 ```
 
+# 3 Software structure and interfaces
 
-# Chapter 3
+## 3.5 Communicating exogenous data to problem definition functions
 
 ```{r}
 ## ----ch03, child='nlpor-structure-and-interfaces.Rnw'--------------------
@@ -163,6 +155,7 @@ anlxb1<-nlxb(yy~exp(p1*sin(p2*xx)), start=strt1, trace=FALSE,
 print(anlxb1)
 ```
 
+### 3.5.1 Use of “global” data and variables
 
 ```{r}
 ## ----label=C03globenv1, echo=TRUE, eval=TRUE-----------------------------
@@ -183,10 +176,7 @@ myrun()
 cat("envjn$y:",envjn$y,"\n")
 ```
 
-
-
-미분함수 구하기 
-
+## 3.8 Providing derivatives for functions
 
 ```{r}
 eps <- sqrt(.Machine$double.eps)
@@ -205,20 +195,101 @@ gr <- function(par, ...) {
    }
    df
 }
+```
 
+# 4 One-parameter root-finding problems
+
+## 4.3 Some examples
+
+### 4.3.1 Exponentially speaking
+
+```{r}
+## ----label=C04chunk13,echo=TRUE,cache=TRUE-------------------------------
+cat("exponential example\n")
+#require("rootoned")
+alpha<-1.0
+efn<-function(x, alpha) { exp(-alpha*x) - 0.2 }
+zfn<-function(x) { x*0 }
+tint<-c(0,100)
+curve(efn(x,alpha=1.0), from=tint[1], to=tint[2], lty=2, ylab="efn(x, alpha)")
+title(sub="dashed for alpha=1, dotted for alpha=0.2")
+curve(zfn, add=TRUE)
+curve(efn(x,alpha=0.02), add=TRUE, lty=3)
+```
+
+
+```{r}
+rform1<- -log(0.2)/1.0
+rform2<- -log(0.2)/0.02
+resr1<-uniroot(efn,tint,tol=1e-10, alpha=1)
+cat("alpha = ",1.0,"\n")
+cat("root(formula)=",rform1,"  root1d:",resr1$root," tol=",resr1$estim.prec,"  fval=",
+         resr1$f.root,"  in   ",resr1$iter,"\n\n") 
+resr2<-uniroot(efn,tint,tol=1e-10, alpha=0.02)
+cat("alpha = ",0.02,"\n")
+cat("root(formula)=",rform2,"  root1d:",resr2$root," tol=",resr2$estim.prec,"  fval=",
+         resr2$f.root,"  in   ",resr2$iter,"\n\n") 
+cat("\n")
+cat("Now look for the root in [0,1]\n")
+tint2a <- c(0, 1)
+# resr2a<-uniroot(efn,tint2a,tol=1e-10, alpha=0.02) # raise error
+```
+
+### 4.3.2 A normal concern
+
+```{r}
+## ----label=C04chunk9, echo=TRUE, size="scriptsize", cache=TRUE-----------
+cat("Gaussian derivative\n")
+der<-function(x,mu,sigma){
+    dd<-(-1)*(1/sqrt(2 * pi * sigma^2)) * (exp(-(x - mu)^2/(2 * sigma^2)) * 
+    ((x - mu)/(sigma^2)))
+}
+x <- seq(0, 8, length.out = 10001)
+plot(x, der(x, mu = 4, sigma = 1), type = "l")
+lines(x, der(x, mu = 4, sigma = 0.1), type = "l", col = "blue")
+lines(x, der(x, mu = 4, sigma = 0.01), type = "l", col = "red")
+```
+
+```{r}
+r1<-uniroot(der, lower=1, upper=6, mu=4, sigma=1)
+r.1<-uniroot(der, lower=1, upper=6, mu=4, sigma=.1)
+r.01<-uniroot(der, lower=1, upper=6, mu=4, sigma=.01)
+r.001<-uniroot(der, lower=1, upper=6, mu=4, sigma=.001)
+sig<-c(1, .1, .01, .001)
+roo<-c(r1$root, r.1$root, r.01$root, r.001$root)
+tabl<-data.frame(sig, roo)
+print(tabl)
+```
+
+```{r}
+library(Rmpfr)
+```
+
+```{r}
+der<-function(x,mu,sigma){
+     dd<-(-1)*(1/sqrt(2 * pi * sigma^2)) * (exp(-(x - mu)^2/(2 * sigma^2)) * ((x - mu)/(sigma^2)))
+}
+```
+
+```{r}
+rootint1<-mpfr(c(1.9, 2.1),200)
+rootint1
+r140<-try(unirootR(der, rootint1, tol=1e-40, mu=4, sigma=1))
+```
+
+```{r}
+rootint2<-mpfr(c(1, 6),200)
+rootint2
+r140a<-try(unirootR(der, rootint2, tol=1e-40, mu=4, sigma=1))
+r140a
 ```
 
 
 
+### 4.3.3 Little Polly Nomial
+```{r}
 
-
-
-
-
-
-
-
-
+```
 
 
 
