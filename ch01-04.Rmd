@@ -284,24 +284,147 @@ r140a<-try(unirootR(der, rootint2, tol=1e-40, mu=4, sigma=1))
 r140a
 ```
 
-
-
 ### 4.3.3 Little Polly Nomial
+
 ```{r}
+## ----label=C04chunk10, echo=TRUE, size="scriptsize", cache=TRUE----------
+z <- c(10, -3, 0, 1)
+simpol<-function(x){ # calculate polynomial z at x 
+   zz <- c(10, -3, 0, 1)
+   ndeg<-length(zz)-1 # degree of polynomial
+   val<-zz[ndeg+1]
+   for (i in 1:ndeg){
+       val<-val*x+zz[ndeg+1-i]
+   }
+   val
+}
+
+simpol2 <- function(x) {
+  10 - 3*x + x^3
+}
+
+tint<-c(-5,5)
+cat("roots of polynomial specified by ")
+print(z)
+cat("\n")
+require(polynom)
+allroots<-polyroot(z)
+print(allroots)
+cat("single root from uniroot on interval ",tint[1],",",tint[2],"\n")
+rt1<-uniroot(simpol, tint)
+print(rt1)
+
+rt2<-uniroot(simpol2, tint)
+print(rt2)
+```
+
+```{r}
+## ----label=C04chunk11, echo=TRUE, size="scriptsize", cache=TRUE----------
+z <- c(16, -8, 1)
+simpol2<-function(x){ # calculate polynomial z at x 
+   val <- (x-4)^2
+}
+tint<-c(-5,5)
+cat("roots of polynomial specified by ")
+print(z)
+require(polynom)
+allroots<-polyroot(z)
+print(allroots)
+cat("single root from uniroot on interval ",tint[1],",",tint[2],"\n")
+rt1<-try(uniroot(simpol2, tint), silent=TRUE)
+print(strwrap(rt1))
+cat("\n Try a cubic\n")
+cub<-function(z) {val<-(z-4)^3}
+cc<-c(-64, 48, -12, 1)
+croot<-polyroot(cc)
+croot
+ans<-uniroot(cub, lower=2, upper=6)
+ans
 
 ```
 
+### 4.3.4 A hypothequial question
+
+```{r}
+## ----label=C04chunk12, echo=TRUE, size="scriptsize", cache=TRUE----------
+mrate<-function(R){
+   val<-0
+   den<-1
+   fact<-1/6
+   term<-1
+   rr<-R/200
+   repeat { # main loop
+      term<-term*fact*rr/den
+      vallast<-val
+      val<-val+term
+#      cat("term =",term,"  val now ",val,"\n")
+      if (val == vallast) break
+      fact<-(fact - 1)
+      den<-den+1
+      if (den > 1000) stop("Too many terms in mrate")
+   }
+   val*100
+}
+A<-function(I,Rval){
+   A<-(1+I/100)^6-(1+R/200)
+}
+
+Rvec<-c()
+i.formula<-c()
+i.root<-c()
+i.mrate<-c()
+
+eps <- .Machine$double.eps
+for (r2 in 0:18){
+   R<-r2/2 # rate per year
+   Rvec<-c(Rvec, R)
+   i.formula<-c(i.formula,100*((1+R/200)^(1/6)-1))
+   i.root<-c(i.root, uniroot(A,c(0,20),Rval=R)$root) # default or 
+   #i.root<-c(i.root, uniroot(A,c(0,20),tol=eps,Rval=R)$root) # with tol 
+   i.mrate<-c(i.mrate,mrate(R))
+}
+   tabR<-data.frame(Rvec, i.mrate, (i.formula-i.mrate), (i.root-i.mrate))
+   colnames(tabR)<-c("rate", "i.mrate", "form - mrate", "root - mrate")
+   print(tabR)
+```
+
+## 4.4 Approaches to solving 1D root-finding problems
+
+```{r}
+## ----label=C04mytanchunk1, echo=TRUE, size="scriptsize", cache=TRUE------
+mytan<-function(xdeg){ # tangent in degrees
+    xrad<-xdeg*pi/180.0 # conversion to radians
+    tt<-tan(xrad)
+}
+gmytan<-function(xdeg){ # tangent in degrees
+    xrad<-xdeg*pi/180.0 # conversion to radians
+    gg<-pi/(180*cos(xrad)^2)
+}
+```
+
+```{r}
+curve(mytan, from = -360, to = 360)
+curve(gmytan, from = -360, to = 360)
+```
 
 
+```{r}
+## ----label=C04mytanroot1
+#install.packages("rootoned", repos="http://R-Forge.R-project.org")
+library(rootoned)
+```
 
-
-
-
-
-
-
-
-
-
-
+```{r}
+tint<-c(80,100)
+ru<-uniroot(mytan, tint)
+ru
+rz<-zeroin(mytan, tint)
+rz
+rr<-root1d(mytan, tint)
+rr
+rn80<-newt1d(mytan, gmytan, 80)
+rn80
+rn100<-newt1d(mytan, gmytan, 100)
+rn100
+```
 
