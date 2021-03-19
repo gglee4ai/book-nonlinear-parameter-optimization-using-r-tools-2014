@@ -1,0 +1,236 @@
+---
+title: "Notebook 1"
+output: html_notebook
+---
+
+
+# Chapter 1
+
+```{r}
+# Figure 1.1
+y <- c(5.308, 7.24, 9.638, 12.866, 17.069, 23.192, 31.443, 38.558, 50.156, 62.948, 75.995, 91.972)
+t <- 1:12
+plot(t, y)
+title(main = "Hobbs’ weed infestation data", font.main = 4)
+```
+
+
+# Chapter 2
+
+```{r}
+sq.f <- function(x) {
+  nn <- length(x)
+  yy <- 1:nn
+  f <- sum((yy - x)^2)
+  cat("Fv=", f, " at ")
+  print(x)
+  f
+}
+
+sq.g <- function(x) {
+  nn <- length(x)
+  yy <- 1:nn
+  gg <- 2 * (x - yy)
+}
+```
+
+
+```{r}
+x <- c(0.1, 0.8)
+sq.f(x)
+print(sq.g(x))
+```
+
+
+```{r}
+source("resources/C02steepdesc.r")
+x <- c(0.1, 0.8)
+asqsd <- stdesc(x, sq.f, sq.g, control = list(trace = 1))
+```
+
+```{r}
+print(asqsd)
+```
+
+
+```{r}
+grose.f <- function(x, gs = 100) {
+  n <- length(x)
+  1 + sum(gs * (x[1:(n - 1)] - x[2:n]^2)^2 + (x[1:(n - 1)] - 1)^2) 
+}
+grose.g <- function(x, gs = 100) {
+# gradient of 1 to (n-1) variant of generalized rosenbrock function # vectorized by JN 090409
+  n <- length(x)
+  gg <- as.vector(rep(0, n))
+  tn <- 2:n
+  tn1 <- tn - 1
+  z1 <- x[tn1] - x[tn]^2
+  z2 <- x[tn1] - 1
+  gg[tn1] <- 2 * (z2 + gs * z1)
+  gg[tn] <- gg[tn] - 4 * gs * z1 * x[tn]
+  gg
+}
+
+x <- c(0.1, 0.8)
+arksd <- stdesc(x, grose.f, grose.g, control = list(trace = 0))
+print(arksd)
+```
+
+```{r}
+grose.f<- function(x, gs=100.){ # 1 to (n-1) variant of generalized rosenbrock function
+    n <- length(x)
+    1 + sum (gs*(x[1:(n-1)] - x[2:n]^2)^2 + (x[1:(n-1)] - 1)^2)    
+}
+
+grose.g<-function(x, gs=100.){ # gradient of 1 to (n-1) variant of generalized rosenbrock function
+## vectorized by JN 090409
+    n <- length(x)
+    gg <- as.vector(rep(0,n))
+    tn <- 2:n
+    tn1 <- tn - 1
+    z1<-x[tn1]-x[tn]^2
+    z2<-x[tn1]-1
+    gg[tn1]<-2.0*(z2+gs*z1)
+    gg[tn]<-gg[tn]-4.0*gs*z1*x[tn]
+    gg
+}
+source("./resources/C02steepdesc.R")
+x <- c(0.1, 0.8)
+arksd <- stdesc(x, grose.f, grose.g, control=list(trace=0))
+print(arksd)
+```
+
+
+```{r}
+F <- function(x) exp(-.05*x)*(x-4)^2
+curve(F, from=0, to=5)
+```
+
+
+
+
+```{r}
+newt <- function(x) {
+  x1 <- exp(-0.05*x) * (2*(x - 4)) - exp(-0.05*x) * 0.05*(x - 4)^2
+  x2 <- (exp(-0.05 * x) * 2 - exp(-0.05 * x) * 0.05 * (2 * (x - 4)) - 
+       (exp(-0.05 * x) * 0.05 * (2 * (x - 4)) - exp(-0.05 * x) * 
+         0.05 * 0.05 * (x - 4)^2))
+  xnew <- x - x1 / x2
+}
+
+x <- 1
+xold <- 0
+while (xold != x) {
+   xold <- x
+   cat("f(",x,")=", F(x),"\n")
+   x <- newt(xold)
+}
+```
+
+
+# Chapter 3
+
+```{r}
+## ----ch03, child='nlpor-structure-and-interfaces.Rnw'--------------------
+## ----label=C03data2sub1, echo=TRUE, cache=TRUE---------------------------
+xx<-1:12
+yy<-exp(-0.1*sin(0.3*xx))
+require(minpack.lm, quietly=TRUE)
+strt1 <- list(p1=0, p2=1)
+## here we do not specify any exogenous data
+anls1<-nlsLM(yy~exp(p1*sin(p2*xx)), start=strt1, trace=FALSE)
+anls1
+rss<-function(par){
+    p1<-par[1]
+    p2<-par[2]
+    res<-exp(p1*sin(p2*xx))-yy
+    sum(res*res)
+}
+## check the initial sum of squares
+print(rss(c(-0.1, 0.3)))
+## and the final sum of squares
+print(rss(coef(anls1)))
+# Now try with an optimizer (default method=Nelder-Mead)
+anm<-optim(strt1, rss)
+anm
+## But (at time of writing) nlmrt requires explicit data
+mydat<-data.frame(xx=xx, yy=yy)
+require(nlmrt, quietly=TRUE)
+anlxb1<-nlxb(yy~exp(p1*sin(p2*xx)), start=strt1, trace=FALSE, 
+   data=mydat, control=list(roffset=FALSE, smallsstest=FALSE))
+## Insert following into call to get a more aggressive search
+##   control=list(roffset=FALSE, smallsstest=FALSE)
+print(anlxb1)
+```
+
+
+```{r}
+## ----label=C03globenv1, echo=TRUE, eval=TRUE-----------------------------
+mystart <- function() {
+# JN: Define globals here.
+   gtn<-list(x=0, y=1, vec = rep(0, 9))
+   envjn<<-list2env(gtn)
+}
+y<-4
+myrun <- function(){
+  cat("y:",y,"  envjn$y: ")
+  print(envjn$y)
+  envjn$y <- 9876
+  return(0)
+}
+mystart()
+myrun()
+cat("envjn$y:",envjn$y,"\n")
+```
+
+
+
+미분함수 구하기 
+
+
+```{r}
+eps <- sqrt(.Machine$double.eps)
+
+## ----label=C03gr1, echo=TRUE---------------------------------------------
+gr <- function(par, ...) {
+   fbase <- myfn(par, ...)  # ensure we have right value, may not be necessary
+   df <- rep(NA, length(par))
+   teps <- eps * (abs(par) + eps)
+   for (i in 1:length(par)) {
+      dx <- par
+      dx[i] <- dx[i] + teps[i] # Dangerous step if a constraint is in the way!
+      tdf <- (myfn(dx, ...) - fbase)/teps[i]
+      if (!is.finite(tdf) || is.nan(tdf)) tdf <- 0  # Is this a good choice?
+      df[i] <- tdf
+   }
+   df
+}
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
