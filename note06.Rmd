@@ -43,7 +43,7 @@ points(wl$Days, predict(wlnls), type = "l", col = "red")
 
 ```{r}
 ## ----label=C06nlschunk01, echo=TRUE--------------------------------------
-#options(width = 60)
+# options(width = 60)
 pastured <- data.frame(
   time = c(9, 14, 21, 28, 42, 57, 63, 70, 79),
   yield = c(8.93, 10.8, 18.59, 22.33, 39.35, 56.11, 61.73, 64.62, 67.08)
@@ -169,7 +169,7 @@ options(show.error.messages = TRUE)
 # # X11() # ensure new graphics screen
 # source("./resources/C06pasturednlsLM.R", echo = FALSE)
 # source("./resources/C06pasturednls2.R", echo = FALSE)
-# 
+#
 
 ## ----label=C06nlschunk05d, echo=TRUE, fig.height=4.75--------------------
 require(nlmrt)
@@ -258,7 +258,7 @@ summary(anoise)
 
 ```{r}
 aperf <- try(nls(y ~ a + b * x, start = list(a = 0.12345, b = 0.54321)))
-#print(strwrap(aperf))
+# print(strwrap(aperf))
 ```
 
 ```{r}
@@ -338,7 +338,7 @@ hobmod <- "y~100*b1/(1+10*b2*exp(-0.1*b3*t))"
 st <- c(b1 = 1, b2 = 1, b3 = 1)
 low <- c(-Inf, -Inf, -Inf)
 up <- c(2, 2, 2)
-#up <- c(6, 6, 6)
+# up <- c(6, 6, 6)
 
 cat("try nlxb\n")
 anlxb2 <- nlxb(hobmod, st, data = weeddata, lower = low, upper = up)
@@ -380,33 +380,36 @@ plot(rate ~ conc, data = Treated)
 ```
 
 ```{r}
-weighted.MM <- function(resp, conc, Vm, K)
-{
-    ## Purpose: exactly as white book p. 451 -- RHS for nls()
-    ##  Weighted version of Michaelis-Menten model
-    ## ----------------------------------------------------------
-    ## Arguments: 'y', 'x' and the two parameters (see book)
-    ## ----------------------------------------------------------
-    ## Author: Martin Maechler, Date: 23 Mar 2001
-    
-    pred <- (Vm * conc)/(K + conc)
-    (resp - pred) / sqrt(pred)
+weighted.MM <- function(resp, conc, Vm, K) {
+  ## Purpose: exactly as white book p. 451 -- RHS for nls()
+  ##  Weighted version of Michaelis-Menten model
+  ## ----------------------------------------------------------
+  ## Arguments: 'y', 'x' and the two parameters (see book)
+  ## ----------------------------------------------------------
+  ## Author: Martin Maechler, Date: 23 Mar 2001
+
+  pred <- (Vm * conc) / (K + conc)
+  (resp - pred) / sqrt(pred)
 }
 
 start <- list(Vm = 200, K = 0.1)
-Pur.wt <- nls( ~ weighted.MM(rate, conc, Vm, K), data = Treated,
-        start)
+Pur.wt <- nls(~ weighted.MM(rate, conc, Vm, K),
+  data = Treated,
+  start
+)
 print(summary(Pur.wt))
 ```
 
 ```{r}
-wtMM<-function(x, resp, conc){ # redefined for nlfb()
-    Vm<-x[1]
-    K <-x[2]
-    res<-weighted.MM(resp, conc, Vm, K)
+wtMM <- function(x, resp, conc) { # redefined for nlfb()
+  Vm <- x[1]
+  K <- x[2]
+  res <- weighted.MM(resp, conc, Vm, K)
 }
-anlf<-nlfb(start, resfn=wtMM, jacfn=NULL, trace=FALSE, 
-         conc=Treated$conc, resp=Treated$rate)
+anlf <- nlfb(start,
+  resfn = wtMM, jacfn = NULL, trace = FALSE,
+  conc = Treated$conc, resp = Treated$rate
+)
 anlf
 ```
 
@@ -416,53 +419,55 @@ anlf
 ## ----label=C06tsl1, echo=TRUE, cache=TRUE, fig.height=4------------------
 set.seed(1235)
 x <- 1:40
-xint<-20.5*rep(1,length(x))
-sla <-  0.5
+xint <- 20.5 * rep(1, length(x))
+sla <- 0.5
 slb <- -0.5
-yint<-30
+yint <- 30
 idx <- which(x <= xint)
-ymod <- { yint + (x-xint)*slb }
-ymod[idx]<-yint+(x[idx] - xint[idx])*sla
-ydata<-ymod+rnorm(length(x),0,2)
-plot(x, ymod, type='l', ylim=c(0,40), ylab="y")
+ymod <- {
+  yint + (x - xint) * slb
+}
+ymod[idx] <- yint + (x[idx] - xint[idx]) * sla
+ydata <- ymod + rnorm(length(x), 0, 2)
+plot(x, ymod, type = "l", ylim = c(0, 40), ylab = "y")
 points(x, ydata)
-title(main="2 straight lines data")
-title(sub="Lines are those used to generate data")
+title(main = "2 straight lines data")
+title(sub = "Lines are those used to generate data")
 ```
 
 ```{r}
 tslexp <- "y ~ (yint + (x-xint)*slb)*(x >= xint) + (yint + (x-xint)*sla)*( x < xint)"
-mydf<-data.frame(x=x, y=ydata)
-mnls<-try(nls(tslexp, trace=FALSE, data=mydf))
+mydf <- data.frame(x = x, y = ydata)
+mnls <- try(nls(tslexp, trace = FALSE, data = mydf))
 strwrap(mnls)
 ```
 
 ```{r}
-mystart<-c(xint = 1, yint=1, sla=1, slb=1)
-mnls<-try(nls(tslexp, start=mystart, trace=FALSE, data=mydf))
+mystart <- c(xint = 1, yint = 1, sla = 1, slb = 1)
+mnls <- try(nls(tslexp, start = mystart, trace = FALSE, data = mydf))
 strwrap(mnls)
 ```
 
 ```{r}
-myst2<-c(xint = 15, yint=25, sla=1, slb=-1)
-mnls2<-try(nls(tslexp, start=myst2, trace=FALSE, data=mydf))
+myst2 <- c(xint = 15, yint = 25, sla = 1, slb = -1)
+mnls2 <- try(nls(tslexp, start = myst2, trace = FALSE, data = mydf))
 summary(mnls2)
 mnls2$m$deviance()
 ```
 
 ```{r}
-mnlxb<-try(nlxb(tslexp, start=mystart, trace=FALSE, data=mydf))
+mnlxb <- try(nlxb(tslexp, start = mystart, trace = FALSE, data = mydf))
 strwrap(mnlxb)
 ```
 
 ```{r}
 myres <- model2resfun(tslexp, mystart)
-tres <- myres(myst2, x = mydf$x, y = mydf$y) 
+tres <- myres(myst2, x = mydf$x, y = mydf$y)
 tres
 ```
 
 ```{r}
-jactry <- try(myjac <- model2jacfun(tslexp, mystart)) 
+jactry <- try(myjac <- model2jacfun(tslexp, mystart))
 strwrap(jactry)
 ```
 
@@ -474,7 +479,7 @@ mnlfb
 
 ```{r}
 ## Also try from better start
-mnlfb2<-try(nlfb(myst2, resfn=myres, trace=FALSE, x=mydf$x, y=mydf$y))
+mnlfb2 <- try(nlfb(myst2, resfn = myres, trace = FALSE, x = mydf$x, y = mydf$y))
 mnlfb2
 ```
 
@@ -483,7 +488,7 @@ mnlfb2
 ## mnlfb2j<-try(nlfb(myst2, resfn=myres, jacfn=NULL, trace=FALSE, x=mydf$x, y=mydf$y))
 ## or with Package pracma's function lsqnonlin (but there is not a good summary())
 require(pracma)
-alsqn<-lsqnonlin(myres, x0=myst2, x=mydf$x, y=mydf$y)
+alsqn <- lsqnonlin(myres, x0 = myst2, x = mydf$x, y = mydf$y)
 print(alsqn$ssq)
 print(alsqn$x)
 ```
@@ -492,132 +497,138 @@ print(alsqn$x)
 
 ```{r}
 require(NISTnls)
-L1<-Lanczos1 # The data frame of data, but more than 2 decimals on y
-L1[,"y"]<-round(L1[,"y"],2)
+L1 <- Lanczos1 # The data frame of data, but more than 2 decimals on y
+L1[, "y"] <- round(L1[, "y"], 2)
 L1
 plot(y ~ x, data = L1)
 ```
 
 ```{r}
 ## ----label=C06lanc2, echo=TRUE, cache=TRUE-------------------------------
-lanc.res<-function (b, data) { # 3 exponentials
-    res <- rep(NA, length(data$x))
-    res <- b[4] * exp(-b[1] * data$x) + b[5] * exp(-b[2] * data$x) +
-           b[6] * exp(-b[3] * data$x) - data$y
+lanc.res <- function(b, data) { # 3 exponentials
+  res <- rep(NA, length(data$x))
+  res <- b[4] * exp(-b[1] * data$x) + b[5] * exp(-b[2] * data$x) +
+    b[6] * exp(-b[3] * data$x) - data$y
 }
-lanc.jac<-function (b, data){  # 3 exponentials
-    expr3 <- exp(-b[1] * data$x)
-    expr7 <- exp(-b[2] * data$x)
-    expr12 <- exp(-b[3] * data$x)
-    J<-matrix(0, nrow=length(data$x), ncol=length(b))
-    J[, 4] <- expr3
-    J[, 1] <- -(b[4] * (expr3 * data$x))
-    J[, 5] <- expr7
-    J[, 2] <- -(b[5] * (expr7 * data$x))
-    J[, 6] <- expr12
-    J[, 3] <- -(b[6] * (expr12 * data$x))
-    J
+lanc.jac <- function(b, data) { # 3 exponentials
+  expr3 <- exp(-b[1] * data$x)
+  expr7 <- exp(-b[2] * data$x)
+  expr12 <- exp(-b[3] * data$x)
+  J <- matrix(0, nrow = length(data$x), ncol = length(b))
+  J[, 4] <- expr3
+  J[, 1] <- -(b[4] * (expr3 * data$x))
+  J[, 5] <- expr7
+  J[, 2] <- -(b[5] * (expr7 * data$x))
+  J[, 6] <- expr12
+  J[, 3] <- -(b[6] * (expr12 * data$x))
+  J
 }
 ```
 
 ```{r}
-bb1<-c(1,2,3,4,5,6)
-bb2<-c(1, 1.1, 1.2, .1, .1, .1)
-names(bb1)<-c("a1","a2","a3","c1","c2","c3")
-names(bb2)<-c("a1","a2","a3","c1","c2","c3")
+bb1 <- c(1, 2, 3, 4, 5, 6)
+bb2 <- c(1, 1.1, 1.2, .1, .1, .1)
+names(bb1) <- c("a1", "a2", "a3", "c1", "c2", "c3")
+names(bb2) <- c("a1", "a2", "a3", "c1", "c2", "c3")
 ## Check residual function
-cat("Sumsquares at bb1 =",as.numeric(crossprod(lanc.res(bb1, data=L1))))
+cat("Sumsquares at bb1 =", as.numeric(crossprod(lanc.res(bb1, data = L1))))
 require(numDeriv)
-JJ<-lanc.jac(bb1, data=L1)
-JJn<-jacobian(lanc.res, bb1, data=L1)
-cat("max abs deviation JJ and JJn:",max(abs(JJ-JJn)),"\n")
-lancexp<-"y ~ (c1*exp(-a1*x) + c2*exp(-a2*x) + c3*exp(-a3*x))"
+JJ <- lanc.jac(bb1, data = L1)
+JJn <- jacobian(lanc.res, bb1, data = L1)
+cat("max abs deviation JJ and JJn:", max(abs(JJ - JJn)), "\n")
+lancexp <- "y ~ (c1*exp(-a1*x) + c2*exp(-a2*x) + c3*exp(-a3*x))"
 ```
 
 ```{r}
 ## ----label=C06lanc3, echo=TRUE, cache=TRUE-------------------------------
-tnls1<-try(nls(lancexp, start=bb1, data=Lanczos1, trace=FALSE))
+tnls1 <- try(nls(lancexp, start = bb1, data = Lanczos1, trace = FALSE))
 strwrap(tnls1)
 ```
 
 ```{r}
-tnls2<-try(nls(lancexp, start=bb2, data=Lanczos1, trace=FALSE))
+tnls2 <- try(nls(lancexp, start = bb2, data = Lanczos1, trace = FALSE))
 strwrap(tnls2)
 ```
 
 ```{r}
 ## nlmrt
 require(nlmrt)
-tnlxb1<-try(nlxb(lancexp, start=bb1, data=Lanczos1, trace=FALSE))
+tnlxb1 <- try(nlxb(lancexp, start = bb1, data = Lanczos1, trace = FALSE))
 tnlxb1
-tnlxb2<-try(nlxb(lancexp, start=bb2, data=Lanczos1, trace=FALSE))
+tnlxb2 <- try(nlxb(lancexp, start = bb2, data = Lanczos1, trace = FALSE))
 tnlxb2
-tnlfb1<-try(nlfb(bb1, lanc.res, trace=FALSE, data=Lanczos1))
+tnlfb1 <- try(nlfb(bb1, lanc.res, trace = FALSE, data = Lanczos1))
 tnlfb1
-tnlfb2<-try(nlfb(bb2, lanc.res, trace=FALSE, data=Lanczos1))
+tnlfb2 <- try(nlfb(bb2, lanc.res, trace = FALSE, data = Lanczos1))
 tnlfb2
-tnlfb1j<-try(nlfb(bb1, lanc.res, lanc.jac, trace=FALSE, data=Lanczos1))
+tnlfb1j <- try(nlfb(bb1, lanc.res, lanc.jac, trace = FALSE, data = Lanczos1))
 tnlfb1j
-tnlfb2j<-try(nlfb(bb2, lanc.res, lanc.jac, trace=FALSE, data=Lanczos1))
+tnlfb2j <- try(nlfb(bb2, lanc.res, lanc.jac, trace = FALSE, data = Lanczos1))
 tnlfb2j
-
 ```
 
 ```{r}
-bb1s<-bb1[1:3] # shorten start, as only 3 starting nonlinear parameters
-bb2s<-bb2[1:3]
-llexp<-"y~cbind(exp(-a1*x), exp(-a2*x), exp(-a3*x))"
-tnls1p<-try(nls(llexp, start=bb1s, data=Lanczos1, algorithm='plinear', 
-    trace=TRUE, control=list(maxiter=100)))
+bb1s <- bb1[1:3] # shorten start, as only 3 starting nonlinear parameters
+bb2s <- bb2[1:3]
+llexp <- "y~cbind(exp(-a1*x), exp(-a2*x), exp(-a3*x))"
+tnls1p <- try(nls(llexp,
+  start = bb1s, data = Lanczos1, algorithm = "plinear",
+  trace = TRUE, control = list(maxiter = 100)
+))
 strwrap(tnls1p)
 ```
 
 ```{r}
-tnls2p<-try(nls(llexp, start=bb2s, data=Lanczos1,  algorithm='plinear',
-    trace=TRUE, control=list(maxiter=100)))
+tnls2p <- try(nls(llexp,
+  start = bb2s, data = Lanczos1, algorithm = "plinear",
+  trace = TRUE, control = list(maxiter = 100)
+))
 strwrap(tnls2p)
 ```
 
 ```{r}
 
 ## ----label=C06lanc5, echo=TRUE, cache=TRUE-------------------------------
-lanclin.res<-function (b, data) 
-{ # restructured to allow for easier linearization
-    xx <- data$x
-    yy <- data$y
-    res <- rep(NA, length(xx))
-    m<-length(xx)
-    n<-3
-    A <- matrix(NA, nrow=m, ncol=n)
-    for (j in 1:n) {
-        A[,j]<-exp(-b[j]*xx)
-    }
-    lmod<-lsfit(A, yy, intercept=FALSE)
-    res<-lmod$residuals
-    attr(res, "coef")<-lmod$coef    
-    res
+lanclin.res <- function(b, data) { # restructured to allow for easier linearization
+  xx <- data$x
+  yy <- data$y
+  res <- rep(NA, length(xx))
+  m <- length(xx)
+  n <- 3
+  A <- matrix(NA, nrow = m, ncol = n)
+  for (j in 1:n) {
+    A[, j] <- exp(-b[j] * xx)
+  }
+  lmod <- lsfit(A, yy, intercept = FALSE)
+  res <- lmod$residuals
+  attr(res, "coef") <- lmod$coef
+  res
 }
 bb1s
-res1L<-lanclin.res(bb1s,data=Lanczos1)
-cat("sumsquares via lanclin for bb1s start:",
-      as.numeric(crossprod(res1L)),"\n")
-tnlfbL1<-try(nlfb(bb1s, lanclin.res, trace=FALSE, data=Lanczos1))
+res1L <- lanclin.res(bb1s, data = Lanczos1)
+cat(
+  "sumsquares via lanclin for bb1s start:",
+  as.numeric(crossprod(res1L)), "\n"
+)
+tnlfbL1 <- try(nlfb(bb1s, lanclin.res, trace = FALSE, data = Lanczos1))
 tnlfbL1
 ## Get the linear coefficients
-resL1<-lanclin.res(coef(tnlfbL1),data=Lanczos1)
+resL1 <- lanclin.res(coef(tnlfbL1), data = Lanczos1)
 resL1
 ```
 
 ```{r}
 ## Now from bb2s
 bb2s
-res2L<-lanclin.res(bb2s,data=Lanczos1)
-cat("sumsquares via lanclin for bb2s start:",
-      as.numeric(crossprod(res2L)),"\n")
-tnlfbL2<-try(nlfb(bb2s, lanclin.res, trace=FALSE, data=Lanczos1))
+res2L <- lanclin.res(bb2s, data = Lanczos1)
+cat(
+  "sumsquares via lanclin for bb2s start:",
+  as.numeric(crossprod(res2L)), "\n"
+)
+tnlfbL2 <- try(nlfb(bb2s, lanclin.res, trace = FALSE, data = Lanczos1))
 tnlfbL2
 ## Get the linear coefficients
-resL2<-lanclin.res(coef(tnlfbL2),data=Lanczos1)
+resL2 <- lanclin.res(coef(tnlfbL2), data = Lanczos1)
 resL2
 ```
 
@@ -632,37 +643,50 @@ plot(y ~ x, data = Lanczos1, log = "y")
 
 ```{r}
 ## data are an exact fit so the convergence criterion fails
-Try(fm1 <- nls(y ~ b1*exp(-b2*x) + b3*exp(-b4*x) + b5*exp(-b6*x),
-           data = Lanczos1, trace = TRUE,
-           start = c(b1 = 1.2, b2 = 0.3, b3 = 5.6, b4 = 5.5,
-                     b5 = 6.5, b6 = 7.6)))
+Try(fm1 <- nls(y ~ b1 * exp(-b2 * x) + b3 * exp(-b4 * x) + b5 * exp(-b6 * x),
+  data = Lanczos1, trace = TRUE,
+  start = c(
+    b1 = 1.2, b2 = 0.3, b3 = 5.6, b4 = 5.5,
+    b5 = 6.5, b6 = 7.6
+  )
+))
 ```
 
 ```{r}
-Try(fm1a <- nls(y ~ b1*exp(-b2*x) + b3*exp(-b4*x) + b5*exp(-b6*x),
-                data = Lanczos1, trace = TRUE, alg = "port",
-                start = c(b1 = 1.2, b2 = 0.3, b3 = 5.6,
-                          b4 = 5.5, b5 = 6.5, b6 = 7.6)))
-```
-
-```{r}
-## data are an exact fit so the convergence criterion fails
-Try(fm2 <- nls(y ~ b1*exp(-b2*x) + b3*exp(-b4*x) + b5*exp(-b6*x),
-           data = Lanczos1, trace = TRUE,
-           start = c(b1 = 0.5, b2 = 0.7, b3 = 3.6, 
-                     b4 = 4.2, b5 = 4,   b6 = 6.3)))
-```
-
-```{r}
-Try(fm2a <- nls(y ~ b1*exp(-b2*x) + b3*exp(-b4*x) + b5*exp(-b6*x),
-                data = Lanczos1, trace = TRUE, alg = "port",
-                start = c(b1 = 0.5, b2 = 0.7, b3 = 3.6,
-                          b4 = 4.2, b5 = 4,   b6 = 6.3)))
+Try(fm1a <- nls(y ~ b1 * exp(-b2 * x) + b3 * exp(-b4 * x) + b5 * exp(-b6 * x),
+  data = Lanczos1, trace = TRUE, alg = "port",
+  start = c(
+    b1 = 1.2, b2 = 0.3, b3 = 5.6,
+    b4 = 5.5, b5 = 6.5, b6 = 7.6
+  )
+))
 ```
 
 ```{r}
 ## data are an exact fit so the convergence criterion fails
-Try(fm3 <- nls(y ~ exp(outer(x,-c(b2, b4, b6))),
-               data = Lanczos1, trace = TRUE, algorithm = "plinear",
-               start = c(b2 = 0.3, b4 = 5.5, b6 = 7.6)))
+Try(fm2 <- nls(y ~ b1 * exp(-b2 * x) + b3 * exp(-b4 * x) + b5 * exp(-b6 * x),
+  data = Lanczos1, trace = TRUE,
+  start = c(
+    b1 = 0.5, b2 = 0.7, b3 = 3.6,
+    b4 = 4.2, b5 = 4, b6 = 6.3
+  )
+))
+```
+
+```{r}
+Try(fm2a <- nls(y ~ b1 * exp(-b2 * x) + b3 * exp(-b4 * x) + b5 * exp(-b6 * x),
+  data = Lanczos1, trace = TRUE, alg = "port",
+  start = c(
+    b1 = 0.5, b2 = 0.7, b3 = 3.6,
+    b4 = 4.2, b5 = 4, b6 = 6.3
+  )
+))
+```
+
+```{r}
+## data are an exact fit so the convergence criterion fails
+Try(fm3 <- nls(y ~ exp(outer(x, -c(b2, b4, b6))),
+  data = Lanczos1, trace = TRUE, algorithm = "plinear",
+  start = c(b2 = 0.3, b4 = 5.5, b6 = 7.6)
+))
 ```
