@@ -1793,18 +1793,18 @@ curve(ljfne, from = log(0.3), to = log(1))</code></pre>
 <pre class="r"><code>min &lt;- optimize(ljfne, interval = c(-10, 10))
 print(min)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJG1pbmltdW1cblsxXSAtMS4wMzQ3MzVcblxuJG9iamVjdGl2ZVxuWzFdIC0wLjY1MDE2OTZcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJG1pbmltdW1cblsxXSAtMS4wMzQ3XG5cbiRvYmplY3RpdmVcblsxXSAtMC42NTAxN1xuIn0= -->
 <pre><code>$minimum
-[1] -1.034735
+[1] -1.0347
 
 $objective
-[1] -0.6501696</code></pre>
+[1] -0.65017</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KFwiSW4gdGhlIG9yaWdpbmFsIHNjYWxlLCBtaW5pbXVtIGlzIGF0IFwiLCBleHAobWluJG1pbmltdW0pLCBcIlxcblwiKVxuYGBgIn0= -->
 <pre class="r"><code>cat(&quot;In the original scale, minimum is at &quot;, exp(min$minimum), &quot;\n&quot;)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiSW4gdGhlIG9yaWdpbmFsIHNjYWxlLCBtaW5pbXVtIGlzIGF0ICAwLjM1NTMyMDcgXG4ifQ== -->
-<pre><code>In the original scale, minimum is at  0.3553207 </code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiSW4gdGhlIG9yaWdpbmFsIHNjYWxlLCBtaW5pbXVtIGlzIGF0ICAwLjM1NTMyIFxuIn0= -->
+<pre><code>In the original scale, minimum is at  0.35532 </code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1818,12 +1818,12 @@ ljfn &lt;- function(r, ep = 0.6501696, sig = 0.3165555) {
 min &lt;- optimize(ljfn, interval = c(0.001, 5))
 min</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJG1pbmltdW1cblsxXSAwLjM1NTMxMTdcblxuJG9iamVjdGl2ZVxuWzFdIC0wLjY1MDE2OTZcbiJ9 -->
+<!-- rnb-output-begin eyJkYXRhIjoiJG1pbmltdW1cblsxXSAwLjM1NTMxXG5cbiRvYmplY3RpdmVcblsxXSAtMC42NTAxN1xuIn0= -->
 <pre><code>$minimum
-[1] 0.3553117
+[1] 0.35531
 
 $objective
-[1] -0.6501696</code></pre>
+[1] -0.65017</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1834,15 +1834,10 @@ $objective
 <h3>11.2.2 A fly in the ointment</h3>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgLS0tLWxhYmVsPUMxMWZsYjEsIGVjaG89VFJVRSwgY2FjaGU9VFJVRS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5yZXF1aXJlKG9wdGlteClcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgLS0tLWxhYmVsPUMxMWZsYjEsIGVjaG89VFJVRSwgY2FjaGU9VFJVRS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5yZXF1aXJlKG9wdGlteClcbmZsYiA8LSBmdW5jdGlvbih4KSB7XG4gIHAgPC0gbGVuZ3RoKHgpXG4gIHN1bShjKDEsIHJlcCg0LCBwIC0gMSkpICogKHggLSBjKDEsIHhbLXBdKV4yKV4yKVxufVxuc3RhcnQgPC0gcmVwKDIsIDQpXG5sbyA8LSByZXAoMiwgNClcbnVwIDwtIHJlcCg0LCA0KVxuYW5zNGEgPC0gdHJ5KG9wdGlteChzdGFydCwgZm4gPSBmbGIsIG1ldGhvZCA9IGMoXCJubWtiXCIpLCBsb3dlciA9IGxvLCB1cHBlciA9IHVwKSlcbmBgYCJ9 -->
 <pre class="r"><code>## ----label=C11flb1, echo=TRUE, cache=TRUE--------------------------------
-require(optimx)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBvcHRpbXhcbiJ9 -->
-<pre><code>Loading required package: optimx</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZmxiIDwtIGZ1bmN0aW9uKHgpIHtcbiAgcCA8LSBsZW5ndGgoeClcbiAgc3VtKGMoMSwgcmVwKDQsIHAgLSAxKSkgKiAoeCAtIGMoMSwgeFstcF0pXjIpXjIpXG59XG5zdGFydCA8LSByZXAoMiwgNClcbmxvIDwtIHJlcCgyLCA0KVxudXAgPC0gcmVwKDQsIDQpXG5hbnM0YSA8LSB0cnkob3B0aW14KHN0YXJ0LCBmbiA9IGZsYiwgbWV0aG9kID0gYyhcIm5ta2JcIiksIGxvd2VyID0gbG8sIHVwcGVyID0gdXApKVxuYGBgIn0= -->
-<pre class="r"><code>flb &lt;- function(x) {
+require(optimx)
+flb &lt;- function(x) {
   p &lt;- length(x)
   sum(c(1, rep(4, p - 1)) * (x - c(1, x[-p])^2)^2)
 }
@@ -1887,10 +1882,10 @@ up &lt;- rep(4, 4)
 ans4p &lt;- optimx(start, fn = flbp, method = c(&quot;hjkb&quot;, &quot;Nelder-Mead&quot;, &quot;nmkb&quot;), flo = lo, fup = up)
 print(summary(ans4p))</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9wdGlteCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6MTIsInN1bW1hcnkiOltdfSwicmRmIjoiSDRzSUFBQUFBQUFBQXd0eWlURG1pdUJpWUdCZ1ptQmhaR1pnWmdVeUdWaERROXgwTFJnWVdKaUFIRVlHRmdaT0VGMEJWQ1FNWlBBQU1SOUlSLzBIa0dMMlJRNE12TnV5NTZlc2hQRXg1WUhBeU80WlBubkdMNGVkY01yelQ0eW95SDNiZ1NGLy96OFlPRGpzYXN0eFB1VUo0MlBvcnhFQU1SaHdtWTlPRXl2dmNMaTlnUUVKSVBIQklRcmpOT0FXQTV0akg1RGtlK25qR2diN21qVWNobW92R1dCOHRBaGd6VXZNVFMwR01nVEFrUUFSWkNvd2hMT000Q3hqT01zRXBya3NNYWMwRmNwaFMwc0Zjb3RodkhSa0htdGVaa2xxRVpURGtaeWZWNWFjbndMVHlKS2RYV0tJeEliWnlGcFJrcG1iaXU3ZTVKekVZcGg3WVlKY0tZa2xpWHBwUllrWXlqbUw4c3Yxa0wzSURMTW9JeXM3Q2NybTlrdk5TVWt0MHZWTlRVeUJTZWZsQXFVWkdQNmhtY2VlWDFDU21aOEhOSTBKbEdwWjBSekNXSVFtd0YrYUI3STlSVGM1b3pRdlc5Y1VHbU9NVU13THBabVIyRHdRSzVuK1E0MWloWVZvYWw1NlpoNHMwRmh6RXBOU2M2QWNQcUF2d1o3VUt5akt6Q3VCaFFwUXRGaXZKTDhrRWFhT0t6ay9CeVlDOWh2RFB3Q3hJQmFsckFNQUFBPT0ifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9wdGlteCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6MTIsInN1bW1hcnkiOltdfSwicmRmIjoiSDRzSUFBQUFBQUFBQTQxU1BVL0NRQmgrK3lWUVFVbjhEMjQwS1RBNFNhUEd4QUVIb3dtalIzdEFiYm1TVXBDQlJDWjE5UmVZdUprd083aXlPZm9IM0J4TVREUnhCcS8xanRRU2pKZGM3bm5lNS8yNDk3MDcycXVWMUpvS0FCTElnZ1NTUWlFb0o4ZjdoUzBBV2FSRUFCa3k0VG1nVGhzVVpPbGVDeU11UGtMbjFKMEJ1UWZuMXJybmZGR25xN2o5K3BjdWZFMTJsdXJyTjdWQisvMTZRWCtaUmNzd0hpL2QzYWNEemhmaWgva1F3TEw4eWZPL3VqRzVHa0ZzeFhnMFVVNUd5MjFSbnNwcHZmcjhPWWJLY0p6V045OWlHWDg5Z0VKUUczY3BDTHZKTXFQWTBlZW9PRWVsT1NyejRENXllNWlSbFFhbXRNdFpNODRVWWdmWVp5UnRlcVJ2ZWhZUGxCMG4wR09ZVjFRR2dkM0d5ZnVhTHVyeSszS2phcUVBYVEwZkxiaG5mTzljaTdjbzhVS3RNNmZPOE9vaGRpM3NGNm9ZV1Z3bWJTb0RUQlA1VWw0bnNEMUNzNG5ocjFVU0Z4SDhoQ0hmSTJGMXEyQzJlc1FwNkdYMlpBTGJPWFpLTVp6OXFTbk9XQzZGanhTVHBrMzQxQlFYMWJITHlCcHRNK3BTNi9nMkNmaFlxTFdyQlY2QXVKOXFlaTYzUk0zQjlCdkJEVjN4clFNQUFBPT0ifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["p1"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["p2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["p3"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["p4"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["fevals"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["gevals"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["niter"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["convcode"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["kkt1"],"name":[10],"type":["lgl"],"align":["right"]},{"label":["kkt2"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["xtime"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"NA","2":"NA","3":"NA","4":"NA","5":"8.9885e+307","6":"NA","7":"NA","8":"NA","9":"9999","10":"NA","11":"NA","12":"0.001","_rn_":"hjkb"},{"1":"2.0067","2":"2","3":"2","4":"3.946","5":"3.3457e+01","6":"449","7":"NA","8":"NA","9":"0","10":"FALSE","11":"FALSE","12":"0.007","_rn_":"Nelder-Mead"},{"1":"NA","2":"NA","3":"NA","4":"NA","5":"8.9885e+307","6":"NA","7":"NA","8":"NA","9":"9999","10":"NA","11":"NA","12":"0.001","_rn_":"nmkb"}],"options":{"columns":{"min":{},"max":[10],"total":[12]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["p1"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["p2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["p3"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["p4"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["fevals"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["gevals"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["niter"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["convcode"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["kkt1"],"name":[10],"type":["lgl"],"align":["right"]},{"label":["kkt2"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["xtime"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"NA","2":"NA","3":"NA","4":"NA","5":"8.9885e+307","6":"NA","7":"NA","8":"NA","9":"9999","10":"NA","11":"NA","12":"0.002","_rn_":"hjkb"},{"1":"2.0067","2":"2","3":"2","4":"3.946","5":"3.3457e+01","6":"449","7":"NA","8":"NA","9":"0","10":"FALSE","11":"FALSE","12":"0.007","_rn_":"Nelder-Mead"},{"1":"NA","2":"NA","3":"NA","4":"NA","5":"8.9885e+307","6":"NA","7":"NA","8":"NA","9":"9999","10":"NA","11":"NA","12":"0.000","_rn_":"nmkb"}],"options":{"columns":{"min":{},"max":[10],"total":[12]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -1924,10 +1919,10 @@ ans4 &lt;- optimx(start, fn = flb, method = c(&quot;Rvmmin&quot;, &quot;L-BFGS-B
 <pre class="r"><code># print(summary(ans4))
 ans4</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9wdGlteCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6MTIsInN1bW1hcnkiOltdfSwicmRmIjoiSDRzSUFBQUFBQUFBQXd0eWlURG1pdUJpWUdCZ1ptQmhaR1pnWmdVeUdWaERROXgwTFJnWVdKaUFIRVlHRmdaT0VGMEJWQ1FNWlBBQU1SOUlod01EQktEVHBNdmZ6d25kMjk0T3B2ZE1GOE9RRjBDbDRmSWVEUkJ4Qjk2KzNxbjdWc0ZvbUx6OUI2ZytHU2p0aHFvZlhiNGV6R2RmQkpPSDhkRnBtRHdEYnNDRlJSNHNCbkV4TUZBaEdPS09pc2tsZTdJYUdPd1Rrbnd2ZlZ6RllMOTY2ZVBnNytjZW9FVUFhMTVpYm1veGtBRUtCaDZvSUZPQklaeGxCR2NadzFrbU1NMWxpVG1scVZBT1cxb3FrRnNNNDZVajgxanpNa3RTaTZBY2p1VDh2TExrL0JTWVJwYnM3QkpESkRiTVJ0YUtrc3pjVkhUM0p1Y2tGc1BjQ3hQa1Nra3NTZFJMSzByRVVNNVpsRit1aCt4Rlpwajdnc3B5Y3pQellFN3kwWFZ5Y3cvV2RZTEpKdVVuVlJZbUFsbi8wQXhrenk4b3ljelBBeHJIQkVxMnJHZ3VZU3hDRStBdnpRTlpuNktibkZHYWw2MXJCbzB5V0ZUeFFtbG1KRFlQeEVxbS8xQ2pXR0dPU3MxTHo4eURoUnByVG1KU2FnNlV3d2YwSnRpWGVnVkZtWGtsc0dBQmloYnJsZVNYSk1MVWNTWG41OEJFd0g1aitBY0F0aXlmc2EwREFBQT0ifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbIm9wdGlteCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6MTIsInN1bW1hcnkiOltdfSwicmRmIjoiSDRzSUFBQUFBQUFBQTVWU1FVN0NRQlFkMm81SUE4VEVoSlZYYUJORUUzY1FZc0NGYmxBU2xrNUx3WVoyaXUyQTZFWjNySFJuM0xzMHhoT29oL0FDeGh2b0JkQnBPNStVb2d1YlRQNTcvODJmZWY5UFc3dWRpdHBSRVVJeVVqSXlrakdIQ0xlUEd0b09Rb3JFU1FZcEtCZkdDZCswemtHZXIySllVVVB4bDQ3LzE5K2Q5c3QwR3NYbnU5S1N2cllZNS9yZVZaeXZGVzZ1YjE4ZklJSmUvUlIxR3lJMkZ1dlQrbVhFcy9lZ0EwOUgwTkhmbi9xTEh1Vml4M3lvOFlwOXNJdVA1bE1KVlkrTmc3ZXZ4MFRKd2dOZ1Nsd3I0Q0FjUTE0a3BXRjVqamJucURKSFcxQThKczdJRW1TbFozRWFBT3NuR2FZMnMzeEJWazJQamsydkM0WEtZTURLQ1F3MzRnbXpYU3Z0MTNSSUFINGhxWFlKSTNyUEowdmJjNzUzcGlkYmxNRmZhK3k2TmdWTCsxcTkwVHpVNnFBYW5uRitTamlhcFE3TWVrTm1lNVFmSjRXL0xVNDV5ZmlweE5xSWh0ZDNOZk5rUkFkYWVWdThHYnhWUVVRNWdmUHhuZEszT0F1REs0djJiUXBqd3c0eExFZVFJdTh6YWxNZitqWmxNQmVlRFhUbU1RTDdWTk56SUJNMWgyWS9OU0orUUs0REFBQT0ifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["p1"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["p2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["p3"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["p4"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["fevals"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["gevals"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["niter"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["convcode"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["kkt1"],"name":[10],"type":["lgl"],"align":["right"]},{"label":["kkt2"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["xtime"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"2","3":"2.0000","4":"2","5":"49.000","6":"1","7":"1","8":"NA","9":"0","10":"FALSE","11":"NA","12":"0.006","_rn_":"Rvmmin"},{"1":"2","2":"2","3":"2.1091","4":"4","5":"32.106","6":"7","7":"7","8":"NA","9":"0","10":"FALSE","11":"TRUE","12":"0.002","_rn_":"L-BFGS-B"},{"1":"2","2":"2","3":"2.1091","4":"4","5":"32.106","6":"44","7":"NA","8":"NA","9":"0","10":"FALSE","11":"TRUE","12":"0.054","_rn_":"bobyqa"}],"options":{"columns":{"min":{},"max":[10],"total":[12]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
+{"columns":[{"label":[""],"name":["_rn_"],"type":[""],"align":["left"]},{"label":["p1"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["p2"],"name":[2],"type":["dbl"],"align":["right"]},{"label":["p3"],"name":[3],"type":["dbl"],"align":["right"]},{"label":["p4"],"name":[4],"type":["dbl"],"align":["right"]},{"label":["value"],"name":[5],"type":["dbl"],"align":["right"]},{"label":["fevals"],"name":[6],"type":["dbl"],"align":["right"]},{"label":["gevals"],"name":[7],"type":["dbl"],"align":["right"]},{"label":["niter"],"name":[8],"type":["dbl"],"align":["right"]},{"label":["convcode"],"name":[9],"type":["dbl"],"align":["right"]},{"label":["kkt1"],"name":[10],"type":["lgl"],"align":["right"]},{"label":["kkt2"],"name":[11],"type":["lgl"],"align":["right"]},{"label":["xtime"],"name":[12],"type":["dbl"],"align":["right"]}],"data":[{"1":"2","2":"2","3":"2.0000","4":"2","5":"49.000","6":"1","7":"1","8":"NA","9":"0","10":"FALSE","11":"NA","12":"0.005","_rn_":"Rvmmin"},{"1":"2","2":"2","3":"2.1091","4":"4","5":"32.106","6":"7","7":"7","8":"NA","9":"0","10":"FALSE","11":"TRUE","12":"0.002","_rn_":"L-BFGS-B"},{"1":"2","2":"2","3":"2.1091","4":"4","5":"32.106","6":"44","7":"NA","8":"NA","9":"0","10":"FALSE","11":"TRUE","12":"0.000","_rn_":"bobyqa"}],"options":{"columns":{"min":{},"max":[10],"total":[12]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -1938,23 +1933,10 @@ ans4</code></pre>
 <h2>11.5 Checking bounds</h2>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgLS0tLWxhYmVsPUMxMWJvdW5kY2hrMSwgZWNobz1UUlVFLCBjYWNoZT1UUlVFLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5yZXF1aXJlKG9wdGV4dHJhcylcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgLS0tLWxhYmVsPUMxMWJvdW5kY2hrMSwgZWNobz1UUlVFLCBjYWNoZT1UUlVFLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tXG5yZXF1aXJlKG9wdGV4dHJhcylcbiMjIGV4dHJhY3QgZmlyc3Qgc29sdXRpb24gZnJvbSBhbnM0XG5hbnM0MSA8LSBhbnM0WzIsIF1cbmM0MSA8LSBjb2VmKGFuczQxKSAjIyBnZXQgY29lZmZpY2llbnRzXG5iZGMgPC0gYm1jaGsoYzQxLCBsb3dlciA9IGxvLCB1cHBlciA9IHVwLCB0cmFjZSA9IDEpXG5gYGAifQ== -->
 <pre class="r"><code>## ----label=C11boundchk1, echo=TRUE, cache=TRUE---------------------------
-require(optextras)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBvcHRleHRyYXNcblxuQXR0YWNoaW5nIHBhY2thZ2U6IOKAmG9wdGV4dHJhc+KAmVxuXG5UaGUgZm9sbG93aW5nIG9iamVjdHMgYXJlIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6b3B0aW144oCZOlxuXG4gICAgYXhzZWFyY2gsIGJtY2hrLCBibXN0ZXAsIGN0cmxkZWZhdWx0LCBmbmNoaywgZ0hnZW4sXG4gICAgZ0hnZW5iLCBncmJhY2ssIGdyY2VudHJhbCwgZ3JjaGssIGdyZndkLCBncm5kLCBoZXNzY2hrLFxuICAgIGtrdGNoaywgb3B0c3AsIHNjYWxlY2hrXG4ifQ== -->
-<pre><code>Loading required package: optextras
-
-Attaching package: ‘optextras’
-
-The following objects are masked from ‘package:optimx’:
-
-    axsearch, bmchk, bmstep, ctrldefault, fnchk, gHgen,
-    gHgenb, grback, grcentral, grchk, grfwd, grnd, hesschk,
-    kktchk, optsp, scalechk</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyMgZXh0cmFjdCBmaXJzdCBzb2x1dGlvbiBmcm9tIGFuczRcbmFuczQxIDwtIGFuczRbMiwgXVxuYzQxIDwtIGNvZWYoYW5zNDEpICMjIGdldCBjb2VmZmljaWVudHNcbmJkYyA8LSBibWNoayhjNDEsIGxvd2VyID0gbG8sIHVwcGVyID0gdXAsIHRyYWNlID0gMSlcbmBgYCJ9 -->
-<pre class="r"><code>## extract first solution from ans4
+require(optextras)
+## extract first solution from ans4
 ans41 &lt;- ans4[2, ]
 c41 &lt;- coef(ans41) ## get coefficients
 bdc &lt;- bmchk(c41, lower = lo, upper = up, trace = 1)</code></pre>
@@ -1965,13 +1947,13 @@ maskadded =  FALSE
 parchanged =  FALSE 
 At least one parameter is on a bound</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmRjICMgcHJpbnQoYmRjJGJjaGFyKVxuYGBgIn0= -->
-<pre class="r"><code>bdc # print(bdc$bchar)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuYmRjICNwcmludChiZGMkYmNoYXIpXG5gYGAifQ== -->
+<pre class="r"><code>bdc #print(bdc$bchar)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiJGJ2ZWNcbiAgICAgICAgIHAxIHAyICAgICAgIHAzIHA0XG5MLUJGR1MtQiAgMiAgMiAyLjEwOTA5MyAgNFxuXG4kYmRtc2tcblsxXSAtMyAtMyAgMSAtMVxuXG4kYmNoYXJcblsxXSBcIkxcIiBcIkxcIiBcIkZcIiBcIlVcIlxuXG4kbG93ZXJcblsxXSAyIDIgMiAyXG5cbiR1cHBlclxuWzFdIDQgNCA0IDRcblxuJG5vbG93ZXJcblsxXSBGQUxTRVxuXG4kbm91cHBlclxuWzFdIEZBTFNFXG5cbiRib3VuZHNcblsxXSBUUlVFXG5cbiRhZG1pc3NpYmxlXG5bMV0gVFJVRVxuXG4kbWFza2FkZGVkXG5bMV0gRkFMU0VcblxuJHBhcmNoYW5nZWRcblsxXSBGQUxTRVxuXG4kZmVhc2libGVcblsxXSBUUlVFXG5cbiRvbmJvdW5kXG5bMV0gVFJVRVxuIn0= -->
+<!-- rnb-output-begin eyJkYXRhIjoiJGJ2ZWNcbiAgICAgICAgIHAxIHAyICAgICBwMyBwNFxuTC1CRkdTLUIgIDIgIDIgMi4xMDkxICA0XG5cbiRiZG1za1xuWzFdIC0zIC0zICAxIC0xXG5cbiRiY2hhclxuWzFdIFwiTFwiIFwiTFwiIFwiRlwiIFwiVVwiXG5cbiRsb3dlclxuWzFdIDIgMiAyIDJcblxuJHVwcGVyXG5bMV0gNCA0IDQgNFxuXG4kbm9sb3dlclxuWzFdIEZBTFNFXG5cbiRub3VwcGVyXG5bMV0gRkFMU0VcblxuJGJvdW5kc1xuWzFdIFRSVUVcblxuJGFkbWlzc2libGVcblsxXSBUUlVFXG5cbiRtYXNrYWRkZWRcblsxXSBGQUxTRVxuXG4kcGFyY2hhbmdlZFxuWzFdIEZBTFNFXG5cbiRmZWFzaWJsZVxuWzFdIFRSVUVcblxuJG9uYm91bmRcblsxXSBUUlVFXG4ifQ== -->
 <pre><code>$bvec
-         p1 p2       p3 p4
-L-BFGS-B  2  2 2.109093  4
+         p1 p2     p3 p4
+L-BFGS-B  2  2 2.1091  4
 
 $bdmsk
 [1] -3 -3  1 -1
@@ -2036,14 +2018,9 @@ Jacobian 또는 Hessian은 별도로 계산할 수 있습니다. 나는 두 가�
 야코비안 특이값은 해당 매개변수와 직접 관련되지 않습니다.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShubG1ydClcbmBgYCJ9 -->
-<pre class="r"><code>require(nlmrt)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBubG1ydFxuIn0= -->
-<pre><code>Loading required package: nlmrt</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuc291cmNlKFwicmVzb3VyY2VzL0MxMmxob2Jicy5yXCIsIGVjaG8gPSBGQUxTRSkgIyB0byBwcm92aWRlIHRoZSBmdW5jdGlvbiBhbmQgZ3JhZGllbnRcbnkgPC0gYyhcbiAgNS4zMDgsIDcuMjQsIDkuNjM4LCAxMi44NjYsIDE3LjA2OSwgMjMuMTkyLCAzMS40NDMsIDM4LjU1OCxcbiAgNTAuMTU2LCA2Mi45NDgsIDc1Ljk5NSwgOTEuOTcyXG4pXG50IDwtIDE6MTJcbndkYXRhIDwtIGRhdGEuZnJhbWUoeSA9IHksIHQgPSB0KVxuYW5seGIgPC0gbmx4Yih5IH4gMTAwICogYXN5bSAvICgxICsgMTAgKiBzdHJ0ICogZXhwKC0wLjEgKiByYXRlICogdCkpLFxuICBzdGFydCA9IGMoYXN5bSA9IDIsIHN0cnQgPSAyLCByYXRlID0gMiksIGxvd2VyID0gYygyLCAyLCAyKSxcbiAgdXBwZXIgPSBjKDQsIDQsIDQpLCBkYXRhID0gd2RhdGEsIHRyYWNlID0gRkFMU0VcbilcbnByaW50KGFubHhiKVxuYGBgIn0= -->
-<pre class="r"><code>source(&quot;resources/C12lhobbs.r&quot;, echo = FALSE) # to provide the function and gradient
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxucmVxdWlyZShubG1ydClcbnNvdXJjZShcInJlc291cmNlcy9DMTJsaG9iYnMuclwiLCBlY2hvID0gRkFMU0UpICMgdG8gcHJvdmlkZSB0aGUgZnVuY3Rpb24gYW5kIGdyYWRpZW50XG55IDwtIGMoXG4gIDUuMzA4LCA3LjI0LCA5LjYzOCwgMTIuODY2LCAxNy4wNjksIDIzLjE5MiwgMzEuNDQzLCAzOC41NTgsXG4gIDUwLjE1NiwgNjIuOTQ4LCA3NS45OTUsIDkxLjk3MlxuKVxudCA8LSAxOjEyXG53ZGF0YSA8LSBkYXRhLmZyYW1lKHkgPSB5LCB0ID0gdClcbmFubHhiIDwtIG5seGIoeSB+IDEwMCAqIGFzeW0gLyAoMSArIDEwICogc3RydCAqIGV4cCgtMC4xICogcmF0ZSAqIHQpKSxcbiAgc3RhcnQgPSBjKGFzeW0gPSAyLCBzdHJ0ID0gMiwgcmF0ZSA9IDIpLCBsb3dlciA9IGMoMiwgMiwgMiksXG4gIHVwcGVyID0gYyg0LCA0LCA0KSwgZGF0YSA9IHdkYXRhLCB0cmFjZSA9IEZBTFNFXG4pXG5wcmludChhbmx4YilcbmBgYCJ9 -->
+<pre class="r"><code>require(nlmrt)
+source(&quot;resources/C12lhobbs.r&quot;, echo = FALSE) # to provide the function and gradient
 y &lt;- c(
   5.308, 7.24, 9.638, 12.866, 17.069, 23.192, 31.443, 38.558,
   50.156, 62.948, 75.995, 91.972
@@ -2079,17 +2056,12 @@ print(svd(mjval)$d)</code></pre>
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdIDEzMS40MjQ4ICAgNy42NzE0ICAgMi42MTM3XG4ifQ== -->
 <pre><code>[1] 131.4248   7.6714   2.6137</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgdGhlIHN1bXNxdWFyZXMgZnVuY3Rpb25cbm1zcyA8LSBtb2RlbDJzc2Z1bihteWZvcm11bGEsIHB2ZWMgPSBjb2VmKGFubHhiKSlcbiMgRXZhbHVhdGUgZ3JhZGllbnQgYXQgdGhlIHNvbHV0aW9uXG5yZXF1aXJlKG51bURlcml2KVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBDcmVhdGUgdGhlIHN1bXNxdWFyZXMgZnVuY3Rpb25cbm1zcyA8LSBtb2RlbDJzc2Z1bihteWZvcm11bGEsIHB2ZWMgPSBjb2VmKGFubHhiKSlcbiMgRXZhbHVhdGUgZ3JhZGllbnQgYXQgdGhlIHNvbHV0aW9uXG5yZXF1aXJlKG51bURlcml2KVxubWdydmFsIDwtIGdyYWQobXNzLCB4ID0gY29lZihhbmx4YiksIHkgPSB5LCB0ID0gdClcbnByaW50KG1ncnZhbClcbmBgYCJ9 -->
 <pre class="r"><code># Create the sumsquares function
 mss &lt;- model2ssfun(myformula, pvec = coef(anlxb))
 # Evaluate gradient at the solution
-require(numDeriv)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiTG9hZGluZyByZXF1aXJlZCBwYWNrYWdlOiBudW1EZXJpdlxuIn0= -->
-<pre><code>Loading required package: numDeriv</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubWdydmFsIDwtIGdyYWQobXNzLCB4ID0gY29lZihhbmx4YiksIHkgPSB5LCB0ID0gdClcbnByaW50KG1ncnZhbClcbmBgYCJ9 -->
-<pre class="r"><code>mgrval &lt;- grad(mss, x = coef(anlxb), y = y, t = t)
+require(numDeriv)
+mgrval &lt;- grad(mss, x = coef(anlxb), y = y, t = t)
 print(mgrval)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-output-begin eyJkYXRhIjoiWzFdICA2LjYzMjRlKzAxIC02LjA5NzBlKzAxICA4LjAwNTNlLTA2XG4ifQ== -->
