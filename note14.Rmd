@@ -58,13 +58,13 @@ method <- c(
   "BFGS",
   "CG",
   "Nelder-Mead",
-  "L-BFGS-B",
-  "Rcgmin",
-  "newuoa",
-  "bobyqa",
-  "hjkb",
-  "nmkb",
-  "spg"
+  "L-BFGS-B"
+  # "Rcgmin",
+  # "newuoa",
+  # "bobyqa",
+  # "hjkb",
+  # "nmkb",
+  # "spg"
 )
 ```
 
