@@ -1,0 +1,13 @@
+memory profiling: sample.interval=20000
+:275987:1074061:27975024:1075:"lazyLoadDBfetch" "<Anonymous>" "lazyLoadDBfetch" "exists" "getInlineHandler" "tryInline" "cmpCall" "cmp" "genCode" "cmpfun" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "compiler:::tryCmpfun" "func" "grad.default" "grad" "grchk" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:344749:2032844:35730016:2565:"func" "grad.default" "grad" "grchk" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:275846:1739479:22074192:1708:"tcrossprod" "outer" "Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:282120:6398679:23637040:366:"as.vector" "Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:284397:8102435:24203424:133:"fn" "doTryCatch" "tryCatchOne" "tryCatchList" "tryCatch" "try" "Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:262360:1822393:19972344:112:"tcrossprod" "outer" "Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:270658:8019193:22040760:483:"as.vector" "Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:261982:1772193:19881512:104:"as.vector" "Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:270493:8055393:22000216:492:"Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:266373:5018993:20974296:361:"crossprod" "as.vector" "Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:270197:1564793:21941472:229:"tcrossprod" "outer" "Rvmminu" "Rvmmin" "eval" "eval" "withVisible" "source" 
+:268662:7163393:21551376:504:
